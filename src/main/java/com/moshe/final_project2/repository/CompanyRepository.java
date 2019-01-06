@@ -10,7 +10,13 @@ import com.moshe.final_project2.entity.Customer;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 	Company findById(long companyId);
-	Optional<Company> findByCompName(String companyName);
+//	Optional<Company> findByCompName(String companyName);
+	Company findByCompName(String companyName);
+	boolean existsBycompName(String compName);
+
+
+	
+	
 	
 	
 

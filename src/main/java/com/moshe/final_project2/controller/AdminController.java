@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.moshe.final_project2.entity.ClientType;
 import com.moshe.final_project2.entity.Company;
 import com.moshe.final_project2.entity.Customer;
 import com.moshe.final_project2.repository.CompanyRepository;
@@ -34,6 +36,16 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+	
+	@PostMapping("/login")
+	public AdminServiceImpl login (@RequestBody String userName, String password, ClientType clientType) {
+		return adminService.login(userName, password, clientType);
+	}
+	
+	@GetMapping("/admiinHomePage")
+	public void homepage(){
+	}
+	
 
 	@GetMapping("/companies")
 	public Collection<Company> findAllCompanies(){
@@ -51,7 +63,7 @@ public class AdminController {
 	}
 
 	@DeleteMapping("/deletecompany/{id}")
-	public ResponseEntity<Company> deleteCompany(@Valid @PathVariable("id") Long companyId) throws CustomException {
+	public ResponseEntity<Company> deleteCompany(@Valid @PathVariable("id") Company companyId) throws CustomException {
 		adminService.deleteCompany(companyId);
 		return ResponseEntity.ok().build();
 	}
@@ -78,7 +90,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/customers")
-	public Collection<Customer> findAllCustomers(){
+	public Collection<Customer> findAllCustomers() throws CustomException{
 		return adminService.findAllCustomers();
 	}
 	
@@ -86,6 +98,15 @@ public class AdminController {
 	public Customer customerToUpDate(@RequestBody Customer customerDetails) throws CustomException {
 		return adminService.updateCustomerDetailes(customerDetails);
 	}
+	
+	@GetMapping ("/viewAllIncomes")
+	public String viewAllIncome() {
+		return adminService.viewAllIncome();
+	}
+	
+	
+
+
 
 
 }

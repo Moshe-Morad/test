@@ -1,5 +1,6 @@
 package com.moshe.final_project2.entity;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,10 +24,10 @@ public class Customer {
 	private String customerName;
 	private String customerPassword;
 	private String customerEmail;
-	@OneToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name = "CUSTOMER_COUPON",
-	joinColumns = @JoinColumn(name = "COUPON_ID"),
-	inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
+	joinColumns = @JoinColumn(name = "CUSTOMER_ID"),
+	inverseJoinColumns = @JoinColumn(name = "COUPON_ID"))
 	private Set<Coupon> coupons;
 	
 	public Customer() {

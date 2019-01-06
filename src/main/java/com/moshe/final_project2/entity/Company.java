@@ -17,20 +17,31 @@ import javax.persistence.Table;
 public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long companyId;
+	private long companyId;
 	private String compName;
 	private String password;
 	private String email;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = " COMPANY_COUPON",
-	joinColumns = @JoinColumn(name = "COUPON_ID"),
-	inverseJoinColumns = @JoinColumn(name = "COMPANY_ID"))
+	@JoinTable(name = "COMPANY_COUPON",
+	joinColumns = @JoinColumn(name =  "COMPANY_ID"),
+	inverseJoinColumns = @JoinColumn(name = "COUPON_ID"))
 	private Set<Coupon> coupons;
 	
 	public Company() {
 		
 	}
+	
+	
+
+	public Company(String compName, String password, String email) {
+		super();
+		this.compName = compName;
+		this.password = password;
+		this.email = email;
+	}
+
+
 
 	public Company(long id, String compName, String password, String email, Set<Coupon> coupons) {
 		super();
@@ -41,11 +52,11 @@ public class Company {
 		this.coupons = coupons;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return companyId;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.companyId = id;
 	}
 
