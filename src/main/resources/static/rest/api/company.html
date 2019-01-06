@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CompanyPage</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="api/js/jquery.js"></script>
+<script src="api/js/bootstrap.min.js"></script>
+<script src="api/js/angular.js"></script>
+<script src="api/js/angular-route.js"></script>
+<script type="text/javascript" src="cmpController.js"></script>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/jumbotron.css" rel="stylesheet">
+<link href="css/company.css" rel="stylesheet">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+</head>
+
+<body ng-app="docompany" ng-controller="cmpControllers">
+
+	<nav class="navbar navbar-static-top navbar-dark bg-inverse">
+		<a class="navbar-brand" href="#">COUPON SYSTEM </a>
+		<ul class="nav navbar-nav">
+			<li class="nav-item active"><a class="nav-link" href="http://localhost:8080/rest/api/company.html"
+				>Home<span class="sr-only">(current)</span></a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+
+			<li style="margin-right: 20px">
+				<button class="btn btn-secondary btn-lg" ng-click="LogOut()">LogOut</button>
+			</li>
+		</ul>
+	</nav>
+	<div class="container">
+
+		<div class="row" style="min-height: 660px;" ng-show="MainMenu">
+
+
+
+			<div class="col-md-3 col-md-3 sidebar">
+				<h2 class="lead">Services for:</h2>
+				<br />
+				<div id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne" aria-expanded="true"
+									aria-controls="collapseOne">Company </a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in"
+							role="tabpanel" aria-labelledby="headingOne">
+							<ul class="nav nav-sidebar">
+								<li><a ng-click="getCompanyDetails()">SHOW COMPANY DETAILES</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingTwo">
+							<h4 class="panel-title">
+								<a class="collapsed" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseTwo"
+									aria-expanded="false" aria-controls="collapseTwo">Coupons</a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingTwo">
+							<ul class="nav nav-sidebar">
+								<li><a ng-click="addNewCoupon()">ADD NEW COUPON</a></li>
+								<li><a ng-click="deleteCoupon()">DELETE COUPON </a></li>
+								<li><a ng-click="upDateCoupon()">UPDATE COUPON</a></li>
+								<li><a ng-click="findCouponById()">FIND COUPON BY ID </a></li>
+								<li><a ng-click="companyCoupons()">SHOW COMPANY COUPON </a></li>
+								<li><a ng-click="findCouponByType()">FIND COUPON BY TYPE</a></li>
+								<li><a ng-click="findCouponByPriceLimit()">FIND COUPON BY PRICE </a></li>
+								<li><a ng-click="findCouponByEndDate()">FIND COUPON BY END DATE</a></li>
+								<li><a ng-click="findAllCoupons()">FIND ALL COUPONS</a></li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+			<!-- WELCOME PAGE -->
+			<div class="col-md-9" ng-show="welcomePage">
+				<h1>Welcome Company {{company.compName | uppercase}},</h1>
+				<br />
+				<h2>make your choice in menu, what to do</h2>
+			</div>
+
+			<!-- COMAPNY DETAILS -->
+			<div class="col-md-9" ng-show="showCompanyDetails">
+				<h1>Company Details:</h1>
+				<br />
+				<h2>id: {{company.id}}</h2>
+				<h2>Name: {{company.compName}}</h2>
+				<h2>Email: {{company.email}}</h2>
+			</div>
+
+
+
+			<div class="mainSection">
+
+				<!-- ADD COUPON -->
+				<div class="col-md-9" ng-show="addCoupon">
+					<h2> Create New Coupon</h2>
+					<form class="form-coupon">
+						<p>
+							<label>* Coupon Title: </label>
+							<input class="field-coupon" type="text" ng-model="title">
+						</p>
+						<p>
+							<label>* Start Date: </label>
+							<input class="field-date-coupon" type="text" ng-model="startDate">
+								<!-- min="{{today | date:'yyyy-MM-dd'}}"> -->
+						</p>
+						<p>
+							<label>* End Date: </label>
+							<input class="field-date-coupon" type="text" ng-model="endDate">
+								<!-- min="{{startDate | date:'yyyy-MM-dd'}}"> -->
+						</p>
+						<p>
+							<label>* Amount: </label>
+							<input class="field-coupon" type="number" ng-model="amount" min="1">
+						</p>
+						<p>
+							<label>* Coupon Type: </label>
+							<!-- <input class="field-coupon" type="text" ng-model="type"> -->
+							<select  class="field-coupon" ng-model="type">
+								<option  value>Select Coupon Type</option>
+								<option  type = "text" >RESTURANTS</option>
+								<option  type = "text" >ELECTRICITY</option>
+								<option  type = "text" >FOOD</option>
+								<option  type = "text" >HEALTH</option>
+								<option  type = "text" >SPORTS</option>
+								<option  type = "text" >CAMPING</option>
+								<option  type = "text" >TRAVELLING</option>
+							</select>
+								<!-- ng-options="type for type in CouponType" -->
+						</p>
+						<p>
+							<label>Message: </label>
+							<input class="field-coupon" type="text" ng-model="message">
+						</p>
+						<p>
+							<label>* Price: </label>
+							<input  class="field-coupon" type="number" step="0.01" min="0.01"
+								ng-model="price">
+						</p>
+						<p>
+							<label>Image: </label>
+							<input class="field-coupon" type="text" ng-model="image">
+						</p>
+						<div>
+							<button type="submit" class="btn btn-primary"
+								ng-click="submitNewCoupon()">Add Coupon</button>
+						</div>
+						<br />
+						<div>
+							<input type="reset" class="btn btn-primary" value="Reset Coupon">
+						</div>
+						<h2>{{couponWasCreated}}</h2>
+					</form>
+				</div>
+
+				<!-- DELETE COMP-->
+
+				<div class="col-md-9" ng-show="showRemoveCoupon">
+					<h2>choose coupon id to delete:</h2>
+					<input type="number" ng-model="id" min="1">ID</input>
+					<button type="button" class="btn btn-primary" ng-click="submitRemove()">Delete</button>
+					<div ng-show="showRemoveCoupon" ng-model="company">
+			</div>
+		</div>
+
+				<!-- UPDATE COUPON -->
+				<div class="col-md-9" ng-show="showFindCoupon">
+					<div>
+						Find Coupon: <input type="number" ng-model="id" min="1"></div>
+					<br />
+					<input type="submit" class="btn btn-primary" value="Find Coupon" ng-click="findCouponById()">
+					<br />
+					<br />
+					<div class="col-md-9" ng-show="showUpdateCoupon">
+
+
+
+						<form class="form-coupon">
+							<p>
+								<label>* End Date: </label>
+								<input class="field-date-coupon" type="text" ng-model="eDate" min="{{tomorrow | date:'yyyy-MM-dd'}}">
+							</p>
+
+							<p>
+								<label>* Price: </label>
+								<input class="field-coupon" type="number" step="0.01" min="0.01"
+									ng-model="price" value={{coupon.price}}>
+							</p>
+
+							<div>
+								<input type="submit" class="btn btn-primary"
+									ng-click="submitUpdatedCoupon()" value="Update Coupon">
+							</div>
+							<br />
+							<div>
+								<input type="reset" class="btn btn-primary" value="Reset Coupon">
+							</div>
+
+						</form>
+					</div>
+				</div>
+
+				<!-- FIND COUPON BY PRICE -->
+				<div class="col-md-9" ng-show="showCouponByPrice">
+					<p>
+						Price: <input type="number" step="0.01" min="0.01"
+							ng-model="findByPrice">
+					</p>
+					<div>
+						<button type="submit" class="btn btn-primary"
+							ng-click="couponsToFind()">Find Coupons</button>
+					</div>
+
+					<div class="col-md-9" ng-show="showCouponByPriceTable">
+						<table border="1">
+							<thead>
+								<tr>
+									<th id="idHead">Id</th>
+									<th id="titleHead">Title</th>
+									<th id="startDateHead">Start Date</th>
+									<th id="endDateHead">End Date</th>
+									<th id="amountHead">Amount</th>
+									<th id="typeHead">Type</th>
+									<th id="messageHead">Message</th>
+									<th id="priceHead">Price</th>
+									<th id="imageHead">Image</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="coupon in resByPrice   |  orderBy:'id'   | filter:searchText">
+									<td>{{ coupon.id}}</td>
+									<td>{{ coupon.title}}</td>
+									<td>{{ coupon.startDate}}</td>
+									<td>{{ coupon.endDate}}</td>
+									<td>{{ coupon.amount}}</td>
+									<td>{{ coupon.type}}</td>
+									<td>{{ coupon.message}}</td>
+									<td>{{ coupon.price}}</td>
+									<td><img src="img/{{ coupon.type}}.png" width="40"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+				</div>
+
+				<!-- FIND COUPON BY TYPE -->
+				<div class="col-md-9" ng-show="showCouponByType">
+					<p>
+						<br /> Coupon Type: <select ng-model="findByType">
+							<!-- ng-options="type for type in couponTypes"> -->
+							<option type = "text">RESTURANTS</option>
+							<option type = "text">ELECTRICITY</option>
+							<option type = "text">FOOD</option>
+							<option type = "text">HEALTH</option>
+							<option type = "text">SPORTS</option>
+							<option type = "text">CAMPING</option>
+							<option type = "text">TRAVELING</option>
+						</select><br/>
+					</p>
+
+					<div>
+						<button type="submit" class="btn btn-primary"
+							ng-click="couponsToFind()">Find Coupons</button>
+					</div>
+
+					<div class="col-md-9" ng-show="showCouponByTypeTable">
+						<table border="1">
+							<thead>
+								<tr>
+									<th id="idHead">Id</th>
+									<th id="titleHead">Title</th>
+									<th id="startDateHead">Start Date</th>
+									<th id="endDateHead">End Date</th>
+									<th id="amountHead">Amount</th>
+									<th id="typeHead">Type</th>
+									<th id="messageHead">Message</th>
+									<th id="priceHead">Price</th>
+									<th id="imageHead">Image</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="coupon in resByType   |  orderBy:'id'   | filter:searchText">
+									<td>{{ coupon.id}}</td>
+									<td>{{ coupon.title}}</td>
+									<td>{{ coupon.startDate}}</td>
+									<td>{{ coupon.endDate}}</td>
+									<td>{{ coupon.amount}}</td>
+									<td>{{ coupon.type}}</td>
+									<td>{{ coupon.message}}</td>
+									<td>{{ coupon.price}}</td>
+									<td><img src="img/{{ coupon.type}}.png" width="40"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+				</div>
+
+				<!-- FIND COUPON BY ID -->
+				<div class="col-md-9" ng-show="showCouponById">
+					<p>
+						<br /> Coupon Id: <input type="text" ng-model="findById">
+
+						<br />
+					</p>
+					<div>
+						<button type="submit" class="btn btn-primary"
+							ng-click="couponsToFind()">Find Coupon</button>
+					</div>
+
+					<div class="col-md-9" ng-show="showCouponByIdTable">
+						<table border="1">
+							<thead>
+								<tr>
+									<th id="idHead">Id</th>
+									<th id="titleHead">Title</th>
+									<th id="startDateHead">Start Date</th>
+									<th id="endDateHead">End Date</th>
+									<th id="amountHead">Amount</th>
+									<th id="typeHead">Type</th>
+									<th id="messageHead">Message</th>
+									<th id="priceHead">Price</th>
+									<th id="imageHead">Image</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="coupon in resById   |  orderBy:'id'   | filter:searchText">
+									<td>{{ coupon.id}}</td>
+									<td>{{ coupon.title}}</td>
+									<td>{{ coupon.startDate}}</td>
+									<td>{{ coupon.endDate}}</td>
+									<td>{{ coupon.amount}}</td>
+									<td>{{ coupon.type}}</td>
+									<td>{{ coupon.message}}</td>
+									<td>{{ coupon.price}}</td>
+									<td><img src="img/{{ coupon.type}}.png" width="40"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+
+				<!-- FIND COUPON BY DATE -->
+				<div class="col-md-9" ng-show="showCouponByDate">
+					<p>
+						<br /> Coupon End Date: <input type="text" ng-model="findByDate">
+
+						<br />
+					</p>
+					<div>
+						<button type="submit" class="btn btn-primary"
+							ng-click="couponsToFind()">Find Coupons</button>
+					</div>
+
+					<div class="col-md-9" ng-show="showCouponByDateTable">
+						<table border="1">
+							<thead>
+								<tr>
+									<th id="idHead">Id</th>
+									<th id="titleHead">Title</th>
+									<th id="startDateHead">Start Date</th>
+									<th id="endDateHead">End Date</th>
+									<th id="amountHead">Amount</th>
+									<th id="typeHead">Type</th>
+									<th id="messageHead">Message</th>
+									<th id="priceHead">Price</th>
+									<th id="imageHead">Image</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="coupon in resByDate   |  orderBy:'id'   | filter:searchText">
+									<td>{{ coupon.id}}</td>
+									<td>{{ coupon.title}}</td>
+									<td>{{ coupon.startDate}}</td>
+									<td>{{ coupon.endDate}}</td>
+									<td>{{ coupon.amount}}</td>
+									<td>{{ coupon.type}}</td>
+									<td>{{ coupon.message}}</td>
+									<td>{{ coupon.price}}</td>
+									<td><img src="img/{{ coupon.type}}.png" width="40"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+				<!-- COMPAMY COUPON -->
+				<div class="col-md-9" ng-show="showCompanyCoupon">
+					<h2>Table of All Company Coupons</h2>
+					<br />
+					<h4>All Company Coupons</h4>
+					<table border="1">
+						<thead>
+							<tr>
+								<th id="idHead">Id</th>
+								<th id="titleHead">Title</th>
+								<th id="startDateHead">Start Date</th>
+								<th id="endDateHead">End Date</th>
+								<th id="amountHead">Amount</th>
+								<th id="typeHead">Type</th>
+								<th id="messageHead">Message</th>
+								<th id="priceHead">Price</th>
+								<th id="imageHead">Image</th>
+							</tr>
+						<tbody>
+							<tr
+								ng-repeat="coupon in couponsAct  |  orderBy:'id'   | filter:searchText" >
+								<td>{{ coupon.id}}</td>
+								<td>{{ coupon.title}}</td>
+								<td>{{ coupon.startDate}}</td>
+								<td>{{ coupon.endDate}}</td>
+								<td>{{ coupon.amount}}</td>
+								<td>{{ coupon.type}}</td>
+								<td>{{ coupon.message}}</td>
+								<td>{{ coupon.price}}</td>
+								<td><img src="img/{{ coupon.type}}.png" width="40"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- /container -->
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+		window.jQuery
+				|| document
+						.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+	</script>
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+		crossorigin="anonymous"></script>
+</body>
+</html>

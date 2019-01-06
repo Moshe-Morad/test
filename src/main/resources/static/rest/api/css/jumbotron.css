@@ -1,0 +1,36 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-bottom: 2rem;
+}
+
+
+main{
+	padding-top: 70px
+}
+
+.display-3 {
+	color: green;
+}
+.jumbotron {
+	background-color:#C0C0C0;
+
+}
+.form-signin {
+	width: 40%;
+	margin: auto;
+
+}
+nav {
+	background-color: #808080;
+	color: #696969;
+	font-size: large;
+
+	}
+	.navbar-brand{
+	color: #C0C0C0;
+	font-size: large;
+	}
+.nav-link{
+	color: #C0C0C0;
+	font-size: large;
+}
